@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import auth from './../../firebase/firebase.init';
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
 //   methods to use for Firebase user auth
+
+const googleLogin=()=>{
+    setLoading(true)
+    const provider=new GoogleAuthProvider();
+    return signInWithPopup(auth,provider)
+}
+
 const registerUser=(email,password)=>{
     setLoading(true)
     return createUserWithEmailAndPassword(auth,email,password)
@@ -57,7 +65,7 @@ const verifyEmail=()=>{
 
   // Auth context data for global use
   const authInfo = {
-    name: "MR Bindia",
+   
     user,
     setUser,
     loading,
@@ -65,7 +73,8 @@ const verifyEmail=()=>{
     registerUser,
     loginUser,
     logOutUser,
-    verifyEmail
+    verifyEmail,
+    googleLogin
   };
 
   return (

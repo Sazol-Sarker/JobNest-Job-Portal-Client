@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
-
+import JobNestLogo from '../assets/JobNestLogo.png'
 const NavBar = () => {
   // context data
   const { user, logOutUser } = useContext(AuthContext);
@@ -37,17 +37,17 @@ const NavBar = () => {
   const links = (
     <>
       <li>
-        <Link to="/">Home</Link>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <Link to="/register">Signup</Link>
+        <NavLink to="/register">Signup</NavLink>
       </li>
       <li>
-        <Link to="/login">Login</Link>
+        <NavLink to="/login">Login</NavLink>
       </li>
       {user && (
         <li>
-          <Link to="/profile">Profile</Link>
+          <NavLink to="/profile">Profile</NavLink>
         </li>
       )}
     </>
@@ -79,7 +79,12 @@ const NavBar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link to="" className="btn btn-ghost text-xl">
+        <img src={JobNestLogo} className="max-w-16" alt="" />
+        {/* #A55A5A */}
+
+        <h3 className="text-2xl text-teal-500">JobNest</h3>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>

@@ -3,9 +3,12 @@ import loginAnimation from "../../assets/lottie/loginAnimation.json";
 import Lottie from "lottie-react";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   // context data
   const { loginUser } = useContext(AuthContext);
+  // hooks
+  const navigate=useNavigate()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ const Login = () => {
     loginUser(email, password)
       .then((result) => {
         console.log("LOGGED in user=>", result.user);
-        
+
         // reset the form
         form.reset()
         // toast
@@ -36,6 +39,8 @@ const Login = () => {
           icon: "success",
           title: "Logged in successfully",
         });
+        // redirects to profile after login
+        navigate('/profile')
       })
       .catch((error) => {
         console.log("ERROR=>", error.code, error.message);

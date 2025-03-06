@@ -1,7 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext/AuthContext";
+import Swal from "sweetalert2";
 
 const NavBar = () => {
+  // context data
+  const { user, logOutUser } = useContext(AuthContext);
+
+  // handleLogout
+  const handleLogout = () => {
+    logOutUser()
+      .then(() => {
+        console.log("Signout successfull");
+        // toast
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "warning",
+          title: "Logged out successfully!",
+        });
+      })
+      .catch((error) => {
+        console.log("ERROR=>", error.code, error.message);
+      });
+  };
+
   const links = (
     <>
       <li>
@@ -13,9 +45,11 @@ const NavBar = () => {
       <li>
         <Link to="/login">Login</Link>
       </li>
-      <li>
-        <Link to="">Profile</Link>
-      </li>
+      {user && (
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
+      )}
     </>
   );
   return (
@@ -51,7 +85,20 @@ const NavBar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {user ? (
+          <Link onClick={handleLogout} to="/login" className="btn">
+            Log-out
+          </Link>
+        ) : (
+          <ul className="flex gap-x-5">
+            <button>
+              <Link to="/register">Signup</Link>
+            </button>
+            <button>
+              <Link to="/login">Login</Link>
+            </button>
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import auth from './../../firebase/firebase.init';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -20,15 +20,40 @@ const loginUser=(email,password)=>{
 // Get the currently signed-in user
 useEffect(()=>{
   const unsubscribe=  onAuthStateChanged(auth,(currentUser)=>{
-        setUser(currentUser)
+    if(currentUser)
+    {
+        // when 1st time registered, we will not track user until logging attempt
+        const newUser=currentUser.metadata.createdAt===currentUser.metadata.lastLoginAt
+
+        if(!newUser)
+        {
+            setUser(currentUser)
+
+        }
+        else{
+            setUser(null)
+        }
+    }
         console.log('currentUser:=> State captured:->',currentUser);
         setLoading(false)
     })
 
-    return ()=>{
-        unsubscribe();
-    }
+    return ()=> unsubscribe();
+    
 },[])
+
+// Logout
+const logOutUser=()=>{
+    setLoading(true)
+    return signOut(auth)
+}
+
+// Email verification link send
+const verifyEmail=()=>{
+    setLoading(true)
+    return sendEmailVerification(auth.currentUser)
+}
+// Password reset link send
 
   // Auth context data for global use
   const authInfo = {
@@ -38,7 +63,9 @@ useEffect(()=>{
     loading,
     setLoading,
     registerUser,
-    loginUser
+    loginUser,
+    logOutUser,
+    verifyEmail
   };
 
   return (

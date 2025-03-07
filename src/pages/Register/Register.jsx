@@ -7,52 +7,16 @@ import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider } from "firebase/auth";
+import GoogleSignIn from "../../components/GoogleSignIn";
 
 const Register = () => {
   // Context data
-  const { setUser, registerUser, verifyEmail, googleLogin } =
+  const { setUser, registerUser, verifyEmail } =
     useContext(AuthContext);
   // hooks
   const navigate = useNavigate();
 
-  // Google sign In
-  const handleGoogleSignIn = () => {
-    googleLogin()
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const user = result.user;
-
-        // console.log("G+ => credential", credential);
-        // console.log("token", token);
-        // console.log("user", user);
-        // set user -> login success toast
-        setUser(user);
-        //success toast
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: `Google sign in for ${user.email} successfull!`,
-        });
-
-        // redirect to profile
-        navigate("/profile");
-      })
-      .catch((error) => {
-        console.log("ERROR=>", error.code, error.message);
-      });
-  };
-
+ 
   // Email register
   const handleRegister = (e) => {
     // stopping page reload
@@ -144,17 +108,7 @@ const Register = () => {
             <p className="text-gray-400">
               Access to all features. No credit card required.
             </p>
-            <button
-              onClick={handleGoogleSignIn}
-              className="btn w-5/6 border-1 p-6 mx-5 border-teal-500 text-lg bg-white"
-            >
-              <FcGoogle className="text-xl" />
-              Sign up with Google
-            </button>
-
-            <div className="divider text-md w-4/5 mx-auto my-4">
-              Or continue with
-            </div>
+            <GoogleSignIn></GoogleSignIn>
           </div>
 
           <form onSubmit={handleRegister} className="card-body w-full ">

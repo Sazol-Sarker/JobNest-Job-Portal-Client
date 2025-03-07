@@ -5,6 +5,9 @@ import homeTeam3 from "../../assets/homeTeam3.jpg";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoBagHandle } from "react-icons/io5";
 import { BsFillPinMapFill } from "react-icons/bs";
+import BrowseCategoryLayout from "../../layout/BrowseCategoryLayout";
+import HotJobsLayout from "../../layout/HotJobsLayout";
+import StatisticsBar from "../../components/StatisticsBar";
 
 const Home = () => {
   return (
@@ -26,7 +29,7 @@ const Home = () => {
                 >
                   The
                   <motion.span
-                    animate={{ color: ["#9dfc03", "#7f28a1", "#9dfc03"] }}
+                    animate={{ color: ["#106cb3", "#7f28a1", "#eb34e1"] }}
                     transition={{
                       duration: 3,
                       ease: "easeInOut",
@@ -130,6 +133,13 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <main className="w-10/12 mx-auto ">
+        <BrowseCategoryLayout></BrowseCategoryLayout>
+
+        <HotJobsLayout></HotJobsLayout>
+        <StatisticsBar></StatisticsBar>
+      </main>
     </div>
   );
 };

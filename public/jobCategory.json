@@ -1,0 +1,73 @@
+[
+    {
+      "logo": "https://i.ibb.co.com/Y7tK3p22/icons8-money-box-100.png",
+      "job_category": "Finance",
+      "no_of_jobs_available": 120
+    },
+    {
+      "logo": "https://i.ibb.co.com/fzrQ3w8x/icons8-it-96.png",
+      "job_category": "IT",
+      "no_of_jobs_available": 150
+    },
+    {
+      "logo": "https://i.ibb.co.com/WNmtbXbH/icons8-marketing-100.png",
+      "job_category": "Marketing",
+      "no_of_jobs_available": 75
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Sales",
+      "no_of_jobs_available": 100
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Human Resources",
+      "no_of_jobs_available": 60
+    },
+    {
+      "logo": "https://i.ibb.co.com/fzrQ3w8x/icons8-it-96.png",
+      "job_category": "Engineering",
+      "no_of_jobs_available": 130
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Healthcare",
+      "no_of_jobs_available": 180
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Education",
+      "no_of_jobs_available": 50
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Logistics",
+      "no_of_jobs_available": 85
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Legal",
+      "no_of_jobs_available": 40
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Creative",
+      "no_of_jobs_available": 110
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Manufacturing",
+      "no_of_jobs_available": 95
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Research & Development",
+      "no_of_jobs_available": 70
+    },
+    {
+      "logo": "https://i.ibb.co.com/zh96wSNC/icons8-service-100.png",
+      "job_category": "Customer Service",
+      "no_of_jobs_available": 150
+    }
+  ]
+  

@@ -1,17 +1,20 @@
 import React, { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import JobNestLogo from '../assets/JobNestLogo.png'
 const NavBar = () => {
   // context data
   const { user, logOutUser } = useContext(AuthContext);
+  // console.log("user NAVBAR =>",user);
+  // console.log("user.emailVerified NAVBAR =>",user.emailVerified);
+  const navigate=useNavigate()
 
   // handleLogout
   const handleLogout = () => {
     logOutUser()
       .then(() => {
-        console.log("Signout successfull");
+        // console.log("Signout successfull");
         // toast
         const Toast = Swal.mixin({
           toast: true,
@@ -28,9 +31,10 @@ const NavBar = () => {
           icon: "warning",
           title: "Logged out successfully!",
         });
+        navigate('/login')
       })
       .catch((error) => {
-        console.log("ERROR=>", error.code, error.message);
+        // console.log("ERROR=>", error.code, error.message);
       });
   };
 
@@ -39,17 +43,17 @@ const NavBar = () => {
       <li>
         <NavLink to="/">Home</NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink to="/register">Signup</NavLink>
       </li>
       <li>
         <NavLink to="/login">Login</NavLink>
-      </li>
-      {user && (
+      </li> */}
+      {user&& 
         <li>
           <NavLink to="/profile">Profile</NavLink>
         </li>
-      )}
+      }
     </>
   );
   return (

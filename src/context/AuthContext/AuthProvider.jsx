@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import auth from './../../firebase/firebase.init';
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 //   methods to use for Firebase user auth
 
@@ -42,17 +43,20 @@ useEffect(()=>{
             setUser(null)
         }
     }
-        console.log('currentUser:=> State captured:->',currentUser);
+        // console.log('currentUser:=> State captured:->',currentUser);
         setLoading(false)
     })
 
-    return ()=> unsubscribe();
+    return ()=> {
+      unsubscribe()
+    };
     
 },[])
 
 // Logout
 const logOutUser=()=>{
     setLoading(true)
+    setUser(null)
     return signOut(auth)
 }
 
@@ -60,9 +64,12 @@ const logOutUser=()=>{
 const verifyEmail=()=>{
     setLoading(true)
     return sendEmailVerification(auth.currentUser)
+  }
+  // Password reset link send
+  const handlePassResetEmail=(email)=>{
+  setLoading(true)
+  return sendPasswordResetEmail(auth,email)
 }
-// Password reset link send
-
   // Auth context data for global use
   const authInfo = {
    
@@ -70,11 +77,14 @@ const verifyEmail=()=>{
     setUser,
     loading,
     setLoading,
+    isModalOpen, 
+    setIsModalOpen,
     registerUser,
     loginUser,
     logOutUser,
     verifyEmail,
-    googleLogin
+    googleLogin,
+    handlePassResetEmail
   };
 
   return (

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import JobsContext from "../context/JobsContext/JobsContext";
 
 const JobCategory1 = () => {
-  const { jobCategories, setJobCategories } = useContext(JobsContext);
+  const { jobCategories } = useContext(JobsContext);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -12,8 +12,8 @@ const JobCategory1 = () => {
   const visibleCount = 5;
   const [startIndex, setStartIndex] = useState(0);
 
-  console.log("in jobcat1=>", jobCategories);
-  console.log("in  items=>", items);
+  // console.log("in jobcat1=>", jobCategories);
+  // console.log("in  items=>", items);
 
   const itemWidth = 100;
   const gap = 8;

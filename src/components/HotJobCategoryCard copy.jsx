@@ -4,76 +4,9 @@ import { FaRegClock } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { BsLightning } from "react-icons/bs";
 
-const HotJobCategoryCard = ({jobsByCategory}) => {
-  // console.log("jobsByCategory=>",jobsByCategory);
-
-  const {company_logo,company,location,title,jobType,description,requirements,applicationDeadline}=jobsByCategory
+const HotJobCategoryCard = () => {
   return (
-
     <div className="card bg-base-100 border-2 border-teal-200  w-96 shadow-xl">
-      <p className="flex items-center justify-end w-full mt-5 pr-5 text-teal-500 text-2xl">
-        <BsLightning />
-      </p>
-      <div className="flex items-center ml-5 gap-x-5">
-        <figure className="">
-          <img
-            // src="https://i.ibb.co.com/fzrQ3w8x/icons8-it-96.png"
-            src={company_logo}
-            alt=""
-            className="rounded-2xl w-14 h-14"
-          />
-        </figure>
-        <div>
-          <h2 className="card-title text-xl">{company}</h2>
-          <p className="flex items-center text-[#B0B9C5]">
-            <FiMapPin className="mr-2"/> {location}
-          </p>
-        </div>
-      </div>
-
-      <div className="card-body flex flex-col ">
-        <div><h2 className="text-xl font-bold text-[#05264E]">{title}</h2></div>
-        <div className="flex gap-x-2  text-[#A0ABB8]">
-          <p className="flex   ">
-            <span className="mr-2">
-              <IoBagOutline className="text-lg" />
-            </span>
-            {jobType}
-          </p>
-          <p className="flex items-center ">
-            <span className="mr-2">
-              <FaRegClock />
-            </span>
-            5 min ago
-          </p>
-        </div>
-
-        <p className="my-5 text-[#4F5E64]">
-          {description}
-        </p>
-
-        <div className="grid grid-cols-3 gap-4 text-lg mb-8 ">
-          {
-            requirements.map((req,idx)=> <div key={idx} className="badge badge-ghost text-[#758188] px-5 py-4  bg-slate-200 ">{req.split(' ')[0]}</div>)
-          }
-         
-          {/* <h2 className="badge badge-ghost">NodeJS</h2> */}
-        </div>
-
-        <div className=" flex items-center justify-between w-full">
-          <div>
-            <p className="flex justify-center items-center text-gray-500">
-              {/* <span className="text-[#3C65F5] font-bold text-3xl">$800</span>
-              /Hour */}
-             <span className="font-bold pr-2"> Deadline:</span> {applicationDeadline}
-            </p>
-          </div>
-          <button className="btn text-[#3C65F5] font-light bg-[#E0E6F7] hover:bg-[#3C65F5] hover:text-white">
-            Apply Now
-          </button>
-        </div>
-      </div>
-      {/* <div className="card bg-base-100 border-2 border-teal-200  w-96 shadow-xl">
       <p className="flex items-center justify-end w-full mt-5 pr-5 text-teal-500 text-2xl">
         <BsLightning />
       </p>
@@ -134,12 +67,7 @@ const HotJobCategoryCard = ({jobsByCategory}) => {
           </button>
         </div>
       </div>
-    </div> */}
     </div>
-
-
-
-
   );
 };
 

@@ -3,7 +3,7 @@ import JobsContext from './JobsContext';
 
 const JobsProvider = ({children}) => {
 const [jobCategories, setJobCategories] = useState([]);
-console.log("jobCategories",jobCategories);
+// console.log("jobCategories",jobCategories);
 
     // fetch jobsCategory
       useEffect(() => {
@@ -12,7 +12,7 @@ console.log("jobCategories",jobCategories);
           .then((data) => {
             setJobCategories(data);
            
-            console.log("Category data from DB:=>",data);
+            // console.log("Category data from DB:=>",data);
           });
       }, []);
 

@@ -3,7 +3,7 @@ import AuthContext from "../context/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider } from "firebase/auth";
 import Swal from "sweetalert2";
-
+import { FcGoogle } from "react-icons/fc";
 const GoogleSignIn = () => {
   // Context data
   const { setUser, googleLogin } =
@@ -45,7 +45,7 @@ const GoogleSignIn = () => {
         navigate("/profile");
       })
       .catch((error) => {
-        console.log("ERROR=>", error.code, error.message);
+        // console.log("ERROR=>", error.code, error.message);
       });
   };
 
@@ -53,7 +53,7 @@ const GoogleSignIn = () => {
     <div>
       <button
         onClick={handleGoogleSignIn}
-        className="btn w-5/6 border-1 p-6 mx-5 border-teal-500 text-lg bg-white"
+        className="btn w-full border-1 p-6 mx-5 border-teal-500 text-lg bg-white"
       >
         <FcGoogle className="text-xl" />
         Sign up with Google

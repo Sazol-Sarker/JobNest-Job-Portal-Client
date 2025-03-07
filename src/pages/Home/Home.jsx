@@ -1,7 +1,7 @@
 import { easeOut, motion } from "framer-motion";
 import homeTeam1 from "../../assets/homeTeam1.jpg";
 import homeTeam2 from "../../assets/homeTeam2.jpg";
-import homeTeam3 from "../../assets/homeTeam3.jpg";
+// import homeTeam3 from "../../assets/homeTeam3.jpg";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoBagHandle } from "react-icons/io5";
 import { BsFillPinMapFill } from "react-icons/bs";

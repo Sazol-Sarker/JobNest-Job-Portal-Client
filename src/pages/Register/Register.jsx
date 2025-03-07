@@ -1,26 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import registerAnimation from "../../assets/lottie/registerAnimation.json";
 import Lottie from "lottie-react";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import { FcGoogle } from "react-icons/fc";
+
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider } from "firebase/auth";
 import GoogleSignIn from "../../components/GoogleSignIn";
 
 const Register = () => {
   // Context data
-  const { setUser, registerUser, verifyEmail } =
-    useContext(AuthContext);
+  const { setUser, registerUser, verifyEmail } = useContext(AuthContext);
   // hooks
+  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
- 
   // Email register
   const handleRegister = (e) => {
     // stopping page reload
     e.preventDefault();
+
+    if (!isChecked) {
+      toast("Please agree to the terms & conditions");
+      return;
+    }
+
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
@@ -41,7 +46,7 @@ const Register = () => {
         errors.push("Password must contain at least 1 digit.");
       if (!/[\W_]/.test(password))
         errors.push("Password must contain at least 1 special character.");
-      console.log("errors=>", errors);
+      // console.log("errors=>", errors);
 
       // Error logging toast alert
       errors.forEach((error, idx) => {
@@ -56,7 +61,7 @@ const Register = () => {
     // Firebase SDK to create user
     registerUser(email, password)
       .then((result) => {
-        console.log("USER=>", result.user);
+        // console.log("USER=>", result.user);
         // resetting form
         form.reset();
         //success toast
@@ -82,15 +87,29 @@ const Register = () => {
             toast(`Email verification link sent to ${email}`);
           })
           .catch((error) => {
-            console.log(
-              "Email verify link sent Error=>",
-              error.code,
-              error.message
+            // console.log(
+            //   "Email verify link sent Error=>",
+            //   error.code,
+            //   error.message
+            // );
+
+            toast(
+              `warning! ${error.code || "Error"} ${
+                error.message || "An unexpected error occurred."
+              }`
             );
           });
+
+        // redirect
+        navigate("/login");
       })
       .catch((error) => {
-        console.log("ERROR=>", error.code, error.message);
+        toast(
+          `warning!  ${error.code || "Error"}  ${
+            error.message || "An unexpected error occurred."
+          }`
+        );
+        // console.log("ERROR=>", error.code, error.message);
       });
   };
   return (
@@ -139,7 +158,11 @@ const Register = () => {
 
               <div className="form-control mt-3">
                 <label className="label cursor-pointer">
-                  <input type="checkbox" className="checkbox" />
+                  <input
+                    onClick={() => setIsChecked(!isChecked)}
+                    type="checkbox"
+                    className="checkbox"
+                  />
                   <span className="label-text label-text-alt link link-hover text-teal-500 font-bold">
                     Agree to our terms & conditions
                   </span>

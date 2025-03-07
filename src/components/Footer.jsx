@@ -2,6 +2,7 @@ import JobNestLogo from '../assets/JobNestLogo.png'
 const Footer = () => {
   return (
     <footer className="footer bg-base-200 text-base-content p-10 flex justify-between">
+     
       <aside>
         <img src={JobNestLogo} className='w-16' alt="" />
         <p>

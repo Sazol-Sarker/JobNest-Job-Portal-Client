@@ -11,7 +11,7 @@ import GoogleSignIn from "../../components/GoogleSignIn";
 
 const Register = () => {
   // Context data
-  const { setUser, registerUser, verifyEmail } = useContext(AuthContext);
+  const { registerUser, verifyEmail } = useContext(AuthContext);
   // hooks
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ const Register = () => {
     }
 
     const form = e.target;
+    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
     // console.log({ email, password });
@@ -61,7 +62,28 @@ const Register = () => {
     // Firebase SDK to create user
     registerUser(email, password)
       .then((result) => {
-        // console.log("USER=>", result.user);
+        const { metadata } = result.user;
+        // newUser goes to mongodb
+        const newUser = {
+          name: name || "Unknown", 
+          email: email,
+          creationTime: metadata.creationTime,
+          lastSignInTime: metadata.lastSignInTime,
+        };
+        console.log("USER=>", result.user);
+        console.log("USER=>", newUser);
+
+
+        // POST API: usersCollection
+        fetch('http://localhost:5000/users',{
+          method:'POST',
+          headers:{'content-type':'application/json'},
+          body:JSON.stringify(newUser)
+          })
+          .then(res=>res.json())
+          .then(data=>console.log("User creation Response from mongodb=>",data))
+
+
         // resetting form
         form.reset();
         //success toast
@@ -114,6 +136,7 @@ const Register = () => {
   };
   return (
     <div className="hero w-11/12 mx-auto bg-base-200 my-10">
+      <title>JobNest | Register</title>
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left w-80 ml-10">
           <Lottie animationData={registerAnimation} loop={true}></Lottie>
@@ -132,6 +155,18 @@ const Register = () => {
 
           <form onSubmit={handleRegister} className="card-body w-full ">
             {/* <h1 className="text-2xl font-bold text-center">Register now!</h1> */}
+            <div className="form-control">
+              <label className="label  mb-3">
+                <span className="label-text font-bold">Name</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Steven Job"
+                className=" w-full border-gray-200 p-3"
+                required
+              />
+            </div>
             <div className="form-control">
               <label className="label  mb-3">
                 <span className="label-text font-bold">Email</span>

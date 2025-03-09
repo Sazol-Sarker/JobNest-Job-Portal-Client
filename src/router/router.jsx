@@ -8,6 +8,8 @@ import Home from "../pages/Home/Home";
 import HotJobCategoryCard from "../components/HotJobCategoryCard";
 import HotJobsLayout from "../layout/HotJobsLayout";
 import PrivateRoutes from "./PrivateRoutes";
+import JobDetails from "../components/JobDetails";
+import UserProfile from "../pages/UserProfile/UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,11 @@ const router = createBrowserRouter([
         element: <HotJobsLayout></HotJobsLayout>,
       },
       {
+        path:'/jobs/:id',
+        loader:({params})=> fetch(`http://localhost:5000/jobs/${params.id}`),
+        element:<JobDetails></JobDetails>
+      },
+      {
         path: "/register",
         element: <Register></Register>,
       },
@@ -43,6 +50,13 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <PrivateRoutes><Profile></Profile></PrivateRoutes>,
       },
+      {
+        path:'/userProfile',
+        // path:'/userProfile/:id',
+        loader:()=>fetch(`http://localhost:5000/appliedJobs`),
+        // loader:({params})=>fetch(`http://localhost:5000/${params.id}`),
+        element:<PrivateRoutes><UserProfile></UserProfile></PrivateRoutes>
+      }
     ],
   },
 ]);

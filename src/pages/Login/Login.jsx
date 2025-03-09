@@ -1,4 +1,4 @@
-import React, { useContext,useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import loginAnimation from "../../assets/lottie/loginAnimation.json";
 import Lottie from "lottie-react";
 import AuthContext from "../../context/AuthContext/AuthContext";
@@ -7,8 +7,9 @@ import { Link, useNavigate } from "react-router-dom";
 import PasswordResetModal from "../../components/PasswordResetModal";
 const Login = () => {
   // context data
-  const { loginUser,setUser,setLoading } = useContext(AuthContext);
+  const { loginUser, setUser, setLoading } = useContext(AuthContext);
   // hooks
+  const [userId,setUserId]=useState(null)
   const navigate = useNavigate();
   // ref hooks for forgot pass modal
   const modalRef = useRef(null);
@@ -19,67 +20,57 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    
-
     // Firebase SDK to auth user login
     loginUser(email, password)
       .then((result) => {
+        setUser(result.user);
         
-        if (!result.user.emailVerified) {
-          setUser(result.user)
-          // toast
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Verify your email first.",
-          });
-          return
-        } 
         
         // console.log("LOG IN SUCCESS-> user=>", result.user);
         setLoading(false);
-
-          // reset the form
-          form.reset();
-          // toast
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Logged in successfully",
-          });
-          // redirects to profile after login
-          navigate("/profile");
-
-        })
-        .catch((error) => {
-          Swal.fire('warning', `${error.code}`, `${error.message}`);
-
-          // console.log("ERROR=>", error.code, error.message);
+        
+        // reset the form
+        form.reset();
+        // toast
+        // toast
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
         });
-      
+        
+        Toast.fire({
+          icon: "success",
+          title: "Logged in successfully",
+        });
+
+        // Find user account id: from mongoDB usersCollection
+        // GET API
+        fetch(`http://localhost:5000/users/${email}`)
+        .then(res=>res.json())
+        .then(data=>{
+          console.log("ID=>",data._id);
+          setUserId(data._id)
+        }) 
+        // redirects to specific user profile after login
+        navigate(`/userProfile`);
+        // navigate(`/userProfile/${userId}`);
+      })
+      .catch((error) => {
+        Swal.fire("warning", `${error.code}`, `${error.message}`);
+
+        // console.log("ERROR=>", error.code, error.message);
+      });
   };
   return (
     <div className="hero bg-base-200 my-10">
+      <title>JobNest | Login</title>
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left w-80 ml-10">
           <Lottie animationData={loginAnimation} loop={true}></Lottie>
@@ -111,7 +102,9 @@ const Login = () => {
                 required
               />
               <label className="label mt-3">
-                <Link onClick={() => modalRef.current.showModal()} to=""
+                <Link
+                  onClick={() => modalRef.current.showModal()}
+                  to=""
                   className="label-text-alt link link-hover text-teal-500 font-bold"
                 >
                   Forgot password?

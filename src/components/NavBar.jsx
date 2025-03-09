@@ -1,15 +1,24 @@
 import React, { useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import JobNestLogo from '../assets/JobNestLogo.png'
 const NavBar = () => {
+  const {id}=useParams()
   // context data
   const { user, logOutUser } = useContext(AuthContext);
   // console.log("user NAVBAR =>",user);
   // console.log("user.emailVerified NAVBAR =>",user.emailVerified);
   const navigate=useNavigate()
+  const location=useLocation()
+  const isJobDetails=location.pathname === `/jobs/${id}`
 
+  console.log("isJobDetails==>",isJobDetails);
+
+
+  const handleGoBackToCategory=()=>{
+    navigate(-1)
+  }
   // handleLogout
   const handleLogout = () => {
     logOutUser()
@@ -41,7 +50,7 @@ const NavBar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/">Home</NavLink>
+        <NavLink to="/" className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}>Home</NavLink>
       </li>
       {/* <li>
         <NavLink to="/register">Signup</NavLink>
@@ -51,7 +60,13 @@ const NavBar = () => {
       </li> */}
       {user&& 
         <li>
-          <NavLink to="/profile">Profile</NavLink>
+          {/* need t edit */}
+          <NavLink to={`/userProfile`} className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}>Profile</NavLink>
+        </li>
+      }
+      {isJobDetails&& 
+        <li onClick={handleGoBackToCategory}>
+          <button className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}>Go back to job category</button>
         </li>
       }
     </>
@@ -100,11 +115,11 @@ const NavBar = () => {
           </Link>
         ) : (
           <ul className="flex gap-x-5">
-            <button>
-              <Link to="/register">Signup</Link>
+            <button className={"border-2 border-teal-300 rounded-md m-4 py-1 px-3 text-[#05264E] font-medium"}>
+              <NavLink to="/register" >Signup</NavLink>
             </button>
-            <button>
-              <Link to="/login">Login</Link>
+            <button className={"border-2 border-teal-300 rounded-md m-4 py-1 px-3 text-[#05264E] font-medium"}>
+              <NavLink to="/login">Login</NavLink>
             </button>
           </ul>
         )}

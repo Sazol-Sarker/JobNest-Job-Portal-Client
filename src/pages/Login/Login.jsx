@@ -20,9 +20,32 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
+
+
     // Firebase SDK to auth user login
     loginUser(email, password)
       .then((result) => {
+
+        if(!result.user.emailVerified)
+          {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Verify your email first.",
+            });
+            return
+          }
+
         setUser(result.user);
         
         

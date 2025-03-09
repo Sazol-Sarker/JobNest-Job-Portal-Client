@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider } from "firebase/auth";
 import GoogleSignIn from "../../components/GoogleSignIn";
+import userLogo from '../../assets/logo/userLogo1.png'
 
 const Register = () => {
   // Context data
-  const { registerUser, verifyEmail } = useContext(AuthContext);
+  const { registerUser, verifyEmail,updateAuthProfile } = useContext(AuthContext);
   // hooks
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
@@ -70,8 +71,20 @@ const Register = () => {
           creationTime: metadata.creationTime,
           lastSignInTime: metadata.lastSignInTime,
         };
+
         console.log("USER=>", result.user);
         console.log("USER=>", newUser);
+
+        // updateAuthProfile: FireBase
+        updateAuthProfile({displayName:name,photoURL:userLogo})
+        .then(()=>{
+          toast('Auth Profile data updated!')
+          console.log("Auth Profile data updated!");
+        })
+        .catch(error=>{
+          console.log("Error=>",error.code,error.message);
+        })
+
 
 
         // POST API: usersCollection

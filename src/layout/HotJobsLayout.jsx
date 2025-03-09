@@ -36,7 +36,7 @@ const HotJobsLayout = () => {
       <div>{/* <h2>No of news: {hotJobsByCategory.length}</h2> */}</div>
 
       <div>
-        {hotJobsByCategory.length ? (
+        {hotJobsByCategory?.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
             {hotJobsByCategory.map((jobsByCategory) => (
               <HotJobCategoryCard

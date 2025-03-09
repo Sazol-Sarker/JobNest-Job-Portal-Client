@@ -17,26 +17,30 @@ const router = createBrowserRouter([
     element: <MainLayout></MainLayout>,
     children: [
       {
-        path: "",
+        path: "/",
+
         element: <Home></Home>,
         children: [
           {
-            path: "",
+            // path: "/",
+            index: true,
             // loader:()=>fetch("http://localhost:5000/hotJob/Engineering"),
-            element: <Navigate to={`/hotJob/Engineering`}></Navigate>,
+            element: <Navigate to="/hotJob/Engineering"></Navigate>,
+          },
+          {
+            path: "/hotJob/:category",
+            loader: ({ params }) =>
+              fetch(`http://localhost:5000/hotJob/${params.category}`),
+            element: <HotJobsLayout></HotJobsLayout>,
           },
         ],
       },
 
       {
-        path: "/hotJob/:category",
-        loader: ({ params }) =>fetch(`http://localhost:5000/hotJob/${params.category}`),
-        element: <HotJobsLayout></HotJobsLayout>,
-      },
-      {
-        path:'/jobs/:id',
-        loader:({params})=> fetch(`http://localhost:5000/jobs/${params.id}`),
-        element:<JobDetails></JobDetails>
+        path: "/jobs/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/jobs/${params.id}`),
+        element: <JobDetails></JobDetails>,
       },
       {
         path: "/register",
@@ -48,15 +52,23 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <PrivateRoutes><Profile></Profile></PrivateRoutes>,
+        element: (
+          <PrivateRoutes>
+            <Profile></Profile>
+          </PrivateRoutes>
+        ),
       },
       {
-        path:'/userProfile',
+        path: "/userProfile",
         // path:'/userProfile/:id',
-        loader:()=>fetch(`http://localhost:5000/appliedJobs`),
+        loader: () => fetch(`http://localhost:5000/appliedJobs`),
         // loader:({params})=>fetch(`http://localhost:5000/${params.id}`),
-        element:<PrivateRoutes><UserProfile></UserProfile></PrivateRoutes>
-      }
+        element: (
+          <PrivateRoutes>
+            <UserProfile></UserProfile>
+          </PrivateRoutes>
+        ),
+      },
     ],
   },
 ]);

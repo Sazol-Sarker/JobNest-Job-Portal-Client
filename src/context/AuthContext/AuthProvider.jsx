@@ -9,6 +9,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import Swal from "sweetalert2";
@@ -47,21 +48,7 @@ const AuthProvider = ({ children }) => {
           setUser(currentUser);
         } else {
           setUser(null);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Verify your email first.",
-          });
+          
         }
       }
       // console.log("currentUser:=> State captured:->", currentUser);
@@ -90,6 +77,14 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return sendPasswordResetEmail(auth, email);
   };
+// Update user info in auth profile
+const updateAuthProfile=(updateData)=>{
+
+  return updateProfile(auth.currentUser,updateData)
+}
+
+
+
   // Auth context data for global use
   const authInfo = {
     user,
@@ -104,6 +99,7 @@ const AuthProvider = ({ children }) => {
     verifyEmail,
     googleLogin,
     handlePassResetEmail,
+    updateAuthProfile
   };
 
   return (

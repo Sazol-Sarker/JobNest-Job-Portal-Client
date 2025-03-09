@@ -8,10 +8,12 @@ import { BsFillPinMapFill } from "react-icons/bs";
 import BrowseCategoryLayout from "../../layout/BrowseCategoryLayout";
 import HotJobsLayout from "../../layout/HotJobsLayout";
 import StatisticsBar from "../../components/StatisticsBar";
+import { Outlet } from "react-router-dom";
 
 const Home = () => {
   return (
     <div>
+      {/* BANNER */}
       <div className="hero bg-base-200 min-h-screen">
         <div className="hero-content flex-col ">
           <div className="flex">
@@ -136,9 +138,10 @@ const Home = () => {
 
       <main className="w-10/12 mx-auto ">
         <BrowseCategoryLayout></BrowseCategoryLayout>
-
-        <HotJobsLayout></HotJobsLayout>
+        {/* <HotJobsLayout></HotJobsLayout> */}
+        <Outlet></Outlet>
         <StatisticsBar></StatisticsBar>
+        {/* <Outlet></Outlet> */}
       </main>
     </div>
   );

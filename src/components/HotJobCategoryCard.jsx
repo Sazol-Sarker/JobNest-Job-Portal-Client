@@ -88,13 +88,15 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
         {/* <div className="grid grid-cols-3 gap-4 text-lg mb-8 "> */}
         <div className="flex flex-wrap gap-2 text-lg mb-8 ">
           {requirements.map((req, idx) => (
-            <div
+            
+            <p
               key={idx}
               className="badge badge-ghost font-light text-[#536268] p-2  bg-slate-200 "
             >
               {/* {req.split(" ")[0]} */}
               {req}
-            </div>
+            </p>
+            
           ))}
         </div>
         {/* SALARY */}

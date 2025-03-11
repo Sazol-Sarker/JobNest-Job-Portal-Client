@@ -11,15 +11,17 @@ const UserProfile = () => {
   const location = useLocation();
   const isProfile = location.pathname === `/userProfile`;
   const [showFireworks, setShowFireworks] = useState(false);
-  const name=user.displayName.toLowerCase()
-  const showName=name.charAt(0).toUpperCase()+name.slice(1)
+  console.log("User in profile",user);
+  // let name="Unknown"
+  // name=name.toLowerCase()
+  // const showName=name.charAt(0).toUpperCase()+name.slice(1)
   useEffect(()=>{
     if(isProfile)
       setShowFireworks(true)
   },[isProfile])
-  const myAppliedJobs = appliedJobs.filter(
+  const myAppliedJobs = appliedJobs?appliedJobs.filter(
     (job) => job.applicant_email === user.email
-  );
+  ):[];
   // console.log("APPLY data rcv in profile=>", appliedJobs);
   // console.log("appliedMyJobs data rcv in profile=>", myAppliedJobs);
 
@@ -39,7 +41,7 @@ const UserProfile = () => {
           {/* <p>{user.metadata.}</p> */}
         </div>
         <div>
-          <h2>{showName}</h2>
+          <h2>{user?.displayName?user?.displayName:"UNKNOWN"}</h2>
           <h2>{user.email}</h2>
           <p> {user.emailVerified?"Yes":"No"}</p>
           <p>{user.metadata.creationTime}</p>
@@ -56,7 +58,7 @@ const UserProfile = () => {
           <h2 className="text-center font-bold text-2xl text-blue-500">
             Applied Jobs
           </h2>
-          <table className="table">
+          <table className="table ">
             <thead>
               <tr>
                 <th></th>

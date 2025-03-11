@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import auth from "./../../firebase/firebase.init";
 import {
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   sendEmailVerification,
   sendPasswordResetEmail,
+  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -36,6 +38,24 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
+
+
+  // When website tab closed, auth state resets by session
+  useEffect(() => {
+    // Set session persistence when the app loads
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => console.log("Session persistence set to 'session'"))
+      .catch((error) => console.error("Error setting persistence:", error));
+
+    // // Listen for authentication state changes
+    // const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    //   setUser(currentUser);
+    //   setLoading(false);
+    // });
+
+    // return () => unsubscribe();
+  }, [auth]);
+
   // Get the currently signed-in user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -51,7 +71,7 @@ const AuthProvider = ({ children }) => {
           
         }
       }
-      // console.log("currentUser:=> State captured:->", currentUser);
+      console.log("currentUser:=> State captured:->", currentUser);
       setLoading(false);
     });
 

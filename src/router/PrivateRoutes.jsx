@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext/AuthContext";
 import { Navigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const PrivateRoutes = ({children}) => {
 const {user,loading}=useContext(AuthContext)
@@ -22,6 +23,7 @@ if(user)
 
     return (
         <div>
+            
             <Navigate to="/login"></Navigate>
         </div>
     );

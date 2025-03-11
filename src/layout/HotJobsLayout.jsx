@@ -10,7 +10,7 @@ const HotJobsLayout = () => {
   // console.log("ID=>", id);
   const { jobCategories } = useContext(JobsContext);
 
-  console.log("hotJobsByCategory DATA:", hotJobsByCategory);
+  // console.log("hotJobsByCategory DATA:", hotJobsByCategory);
 
   return (
     <div className="flex flex-col items-center mt-10">

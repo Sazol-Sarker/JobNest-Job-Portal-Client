@@ -11,7 +11,7 @@ const UserProfile = () => {
   const location = useLocation();
   const isProfile = location.pathname === `/userProfile`;
   const [showFireworks, setShowFireworks] = useState(false);
-  console.log("User in profile",user);
+  // console.log("User in profile",user);
   // let name="Unknown"
   // name=name.toLowerCase()
   // const showName=name.charAt(0).toUpperCase()+name.slice(1)

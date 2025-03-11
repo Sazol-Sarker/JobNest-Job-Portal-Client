@@ -14,7 +14,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
-import Swal from "sweetalert2";
+import axios from "axios";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -39,8 +39,7 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-
-  // When website tab closed, auth state resets by session
+  // When website tab closed, auth state resets by session FIREBASE Client SDK Fn: browserSessionPersistence
   useEffect(() => {
     // Set session persistence when the app loads
     setPersistence(auth, browserSessionPersistence)
@@ -62,17 +61,36 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         // console.log();
         // when 1st time registered, we will not track user until logging attempt
-        const newUser = currentUser.emailVerified;
+        const verifiedUser = currentUser.emailVerified;
 
-        if (newUser) {
+        console.log("In AUTH STATE=>>", verifiedUser);
+        // if email verified
+        if (verifiedUser) {
           setUser(currentUser);
+
+          // POST API: get jwt token
+          const user = { email: currentUser.email };
+          axios
+            .post("http://localhost:5000/jwt", user, { withCredentials: true })
+            .then((res) => {
+              setLoading(false);
+              console.log("RESPONSE=>", res.data);
+            });
         } else {
           setUser(null);
-          
         }
+      } else {
+        // ALAS! user logging out? => unavailable
+        // POST API: JWT AUTH
+        axios
+          .post("http://localhost:5000/logout", {}, { withCredentials: true })
+          .then((res) => {
+            console.log("LOGOUT=>", res.data);
+            setLoading(false);
+          });
       }
       console.log("currentUser:=> State captured:->", currentUser);
-      setLoading(false);
+      // setLoading(false);
     });
 
     return () => {
@@ -97,13 +115,10 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return sendPasswordResetEmail(auth, email);
   };
-// Update user info in auth profile
-const updateAuthProfile=(updateData)=>{
-
-  return updateProfile(auth.currentUser,updateData)
-}
-
-
+  // Update user info in auth profile
+  const updateAuthProfile = (updateData) => {
+    return updateProfile(auth.currentUser, updateData);
+  };
 
   // Auth context data for global use
   const authInfo = {
@@ -119,7 +134,7 @@ const updateAuthProfile=(updateData)=>{
     verifyEmail,
     googleLogin,
     handlePassResetEmail,
-    updateAuthProfile
+    updateAuthProfile,
   };
 
   return (

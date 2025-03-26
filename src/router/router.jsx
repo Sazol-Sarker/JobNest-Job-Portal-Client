@@ -10,6 +10,8 @@ import HotJobsLayout from "../layout/HotJobsLayout";
 import PrivateRoutes from "./PrivateRoutes";
 import JobDetails from "../components/JobDetails";
 import UserProfile from "../pages/UserProfile/UserProfile";
+import NewJob from "../components/NewJob";
+import MyPostedJobs from "../components/MyPostedJobs";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +42,12 @@ const router = createBrowserRouter([
         path: "/jobs/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:5000/jobs/${params.id}`),
-          // fetch(`http://localhost:5000/jobs/${params.id}`),
-        element: <PrivateRoutes><JobDetails></JobDetails></PrivateRoutes>,
+        // fetch(`http://localhost:5000/jobs/${params.id}`),
+        element: (
+          <PrivateRoutes>
+            <JobDetails></JobDetails>
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/register",
@@ -70,6 +76,16 @@ const router = createBrowserRouter([
           </PrivateRoutes>
         ),
       },
+      {
+        path: "/addJob",
+        // loader:()=>fetch("http://localhost:5000/hotJob/Engineering"),
+        element: <NewJob></NewJob>,
+      },
+      {
+        path: "/allPostedJobs",
+        // loader:()=>fetch("http://localhost:5000/hotJob/Engineering"),
+        element: <MyPostedJobs></MyPostedJobs>
+      }
     ],
   },
 ]);

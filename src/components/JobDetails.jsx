@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
+import { differenceInDays } from "date-fns";
 const JobDetails = () => {
   //   const { id } = useParams();
   //   const [jobPost, setJobPost] = useState({});
@@ -27,7 +28,13 @@ const JobDetails = () => {
     requirements,
     applicationDeadline,
     salaryRange,
+    postedAt
   } = jobPost;
+
+  // use this to wrap card with HOT! NEW! tags if  diffInDays=0
+  const diffInDays=differenceInDays(new Date(),postedAt||'2025-03-27')
+  console.log(diffInDays);
+
   // console.log(jobPost);
   // console.log(company, location);
 
@@ -105,7 +112,7 @@ const JobDetails = () => {
             <img
               // src="https://i.ibb.co.com/fzrQ3w8x/icons8-it-96.png"
               src={company_logo}
-              alt=""
+              alt={company}
               className="rounded-2xl w-14 h-14"
             />
           </figure>
@@ -130,7 +137,7 @@ const JobDetails = () => {
             className="badge badge-ghost text-sm  text-gray-500 ml-auto mr-4 mt-4 p-2 font-bold border-2 mb-4 border-teal-500"
           >
             {Math.floor(salaryRange.min / 1000)}K-
-            {Math.floor(salaryRange.max / 1000)}K{" "}
+            {Math.floor(salaryRange.max / 1000)}K
             {salaryRange.currency.toUpperCase()}
           </motion.div>
         </div>
@@ -148,11 +155,11 @@ const JobDetails = () => {
               </span>
               {jobType}
             </p>
-            <p className="flex items-center ">
+            <p className="flex items-center text-teal-700 ">
               <span className="mr-2">
                 <FaRegClock />
               </span>
-              5 min ago
+              {diffInDays?`${diffInDays} days ago`:"Today"}
             </p>
           </div>
 

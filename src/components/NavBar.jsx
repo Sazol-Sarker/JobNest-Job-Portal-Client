@@ -64,12 +64,17 @@ const NavBar = () => {
           Home
         </NavLink>
       </li>
-      {/* <li>
-        <NavLink to="/register">Signup</NavLink>
+      <li>
+        <NavLink
+          to="/addJob"
+          className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}
+        >
+          Add A Job
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/login">Login</NavLink>
-      </li> */}
+        <NavLink to="/allPostedJobs"  className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}>My Posted Jobs</NavLink>
+      </li>
       {user && (
         <li>
           {/* need t edit */}
@@ -137,7 +142,11 @@ const NavBar = () => {
         {user ? (
           <>
             <Link to="/userProfile" className="flex flex-col items-center mr-4">
-              <img src={user.photoURL} alt="user" className="w-10 rounded-full border-2" />
+              <img
+                src={user.photoURL}
+                alt="user"
+                className="w-10 rounded-full border-2"
+              />
               <p className="text-[#05264E] font-bold">{user.displayName}</p>
             </Link>
             <Link onClick={handleLogout} to="/login" className="btn">

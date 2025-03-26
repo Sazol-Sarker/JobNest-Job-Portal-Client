@@ -20,7 +20,7 @@ const HotJobsLayout = () => {
       <p>Search and connect with the right candidates faster.</p>
 
       {/* <HotJobCategoryCard></HotJobCategoryCard> */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 mt-10">
+      <div id="hotJobs" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 mt-10">
         {
           jobCategories.map((jobCat, idx) => (
             <NavLink key={idx} to={`/hotJob/${jobCat.job_category}`}>

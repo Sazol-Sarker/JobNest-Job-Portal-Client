@@ -9,7 +9,7 @@ const Login = () => {
   // context data
   const { loginUser, setUser, setLoading } = useContext(AuthContext);
   // hooks
-  const [userId,setUserId]=useState(null)
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
   // ref hooks for forgot pass modal
   const modalRef = useRef(null);
@@ -20,38 +20,33 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-
-
     // Firebase SDK to auth user login
     loginUser(email, password)
       .then((result) => {
-
-        if(!result.user.emailVerified)
-          {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Verify your email first.",
-            });
-            return
-          }
+        if (!result.user.emailVerified) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Verify your email first.",
+          });
+          return;
+        }
 
         setUser(result.user);
-        
-        
+
         // console.log("LOG IN SUCCESS-> user=>", result.user);
         setLoading(false);
-        
+
         // reset the form
         form.reset();
         // toast
@@ -67,7 +62,7 @@ const Login = () => {
             toast.onmouseleave = Swal.resumeTimer;
           },
         });
-        
+
         Toast.fire({
           icon: "success",
           title: "Logged in successfully",
@@ -76,14 +71,14 @@ const Login = () => {
         // Find user account id: from mongoDB usersCollection
         // GET API
         fetch(`http://localhost:5000/users/${email}`)
-        .then(res=>res.json())
-        .then(data=>{
-          console.log("ID=>",data._id);
-          setUserId(data._id)
-        }) 
-        // redirects to specific user profile after login
-        navigate(`/userProfile`);
-        // navigate(`/userProfile/${userId}`);
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log("ID=>",data._id);
+            setUserId(data._id);
+            // redirects to specific user profile after login
+            navigate(`/userProfile`);
+            // navigate(`/userProfile/${userId}`);
+          });
       })
       .catch((error) => {
         Swal.fire("warning", `${error.code}`, `${error.message}`);

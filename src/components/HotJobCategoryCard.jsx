@@ -128,7 +128,7 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
         </Marquee>
 
         <div className=" flex items-center justify-between w-full">
-          <div className="md:flex text-[#05264E]">
+          <div className="flex-col md:flex text-[#05264E]">
             {/* <span className="text-[#3C65F5] font-bold text-3xl">$800</span>
               /Hour */}
             <span className="font-bold pr-2 "> Deadline:</span>

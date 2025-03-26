@@ -8,11 +8,12 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider } from "firebase/auth";
 import GoogleSignIn from "../../components/GoogleSignIn";
-import userLogo from '../../assets/logo/userLogo1.png'
+import userLogo from "../../assets/logo/userLogo1.png";
 
 const Register = () => {
   // Context data
-  const { registerUser, verifyEmail,updateAuthProfile } = useContext(AuthContext);
+  const { registerUser, verifyEmail, updateAuthProfile } =
+    useContext(AuthContext);
   // hooks
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
@@ -66,36 +67,35 @@ const Register = () => {
         const { metadata } = result.user;
         // newUser goes to mongodb
         const newUser = {
-          name: name || "Unknown", 
+          name: name || "Unknown",
           email: email,
           creationTime: metadata.creationTime,
           lastSignInTime: metadata.lastSignInTime,
         };
 
-        console.log("USER=>", result.user);
-        console.log("USER=>", newUser);
+        // console.log("USER=>", result.user);
+        // console.log("USER=>", newUser);
 
         // updateAuthProfile: FireBase
-        updateAuthProfile({displayName:name,photoURL:userLogo})
-        .then(()=>{
-          toast('Auth Profile data updated!')
-          console.log("Auth Profile data updated!");
-        })
-        .catch(error=>{
-          console.log("Error=>",error.code,error.message);
-        })
-
-
+        updateAuthProfile({ displayName: name, photoURL: userLogo })
+          .then(() => {
+            toast("Auth Profile data updated!");
+            // console.log("Auth Profile data updated!");
+          })
+          .catch((error) => {
+            // console.log("Error=>",error.code,error.message);
+          });
 
         // POST API: usersCollection
-        fetch('http://localhost:5000/users',{
-          method:'POST',
-          headers:{'content-type':'application/json'},
-          body:JSON.stringify(newUser)
-          })
-          .then(res=>res.json())
-          .then(data=>console.log("User creation Response from mongodb=>",data))
-
+        fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(newUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log("User creation Response from mongodb=>", data);
+          });
 
         // resetting form
         form.reset();

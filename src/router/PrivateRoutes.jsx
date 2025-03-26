@@ -8,12 +8,12 @@ const {user,loading}=useContext(AuthContext)
 
 if(loading)
 {
-    return  <>
+    return  <div className="flex items-center justify-center">
     <span className="loading loading-bars loading-xs"></span>
     <span className="loading loading-bars loading-sm"></span>
     <span className="loading loading-bars loading-md"></span>
     <span className="loading loading-bars loading-lg"></span>
-    </>
+    </div>
 }
 
 

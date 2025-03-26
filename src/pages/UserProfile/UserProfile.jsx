@@ -3,11 +3,19 @@ import { useLoaderData, useLocation } from "react-router-dom";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import SingleAppliedJob from "../../components/SingleAppliedJob";
 import Fireworks from "../../components/Fireworks";
+import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const UserProfile = () => {
   const { user } = useContext(AuthContext);
-  const appliedJobs = useLoaderData();
+  // const appliedJobs = useLoaderData();
+  const [loadedAppliedJobs,setLoadedAppliedJobs]=useState([])
+  const [appliedJobs,setAppliedJobs]=useState(loadedAppliedJobs)
+  const [deleteJobTriggered,setDeleteJobTriggered]=useState(false)
+  // console.log("appliedJobs==>",appliedJobs);
+
+  const axiosSecure=useAxiosSecure()
   const location = useLocation();
   const isProfile = location.pathname === `/userProfile`;
   const [showFireworks, setShowFireworks] = useState(false);
@@ -19,9 +27,36 @@ const UserProfile = () => {
     if(isProfile)
       setShowFireworks(true)
   },[isProfile])
-  const myAppliedJobs = appliedJobs?appliedJobs.filter(
-    (job) => job.applicant_email === user.email
-  ):[];
+  // const myAppliedJobs = appliedJobs?appliedJobs.filter(
+  //   (job) => job.applicant_email === user.email
+  // ):[];
+
+  useEffect(()=>{
+    // console.log(`http://localhost:5000/appliedJobs?email=${user.email}`);
+    // fetch(`http://localhost:5000/appliedJobs?email=${user.email}`)
+    // .then(res=>res.json())
+    // .then(data=>setAppliedJobs(data))
+
+    // beta, lets use axios
+    axios.get(`http://localhost:5000/appliedJobs?email=${user.email}`,{withCredentials:true})
+    .then(res=>{
+      setAppliedJobs(res.data)
+      setLoadedAppliedJobs(res.data)
+      setDeleteJobTriggered(false)
+      // console.log("Axios response:",res.data);
+    })
+
+    // lets secure axios api from invalid jwt token
+    // axiosSecure.get(`/appliedJobs?email=${user.email}`)
+    // .then(res=>{
+    //   setAppliedJobs(res.data)
+    //  console.log("crooked Axios response:",res.data);
+    // })
+
+  },[deleteJobTriggered])
+
+
+
   // console.log("APPLY data rcv in profile=>", appliedJobs);
   // console.log("appliedMyJobs data rcv in profile=>", myAppliedJobs);
 
@@ -52,13 +87,13 @@ const UserProfile = () => {
 
       {/* head */}
      {/* <div className="  border-2 border-teal-400 rounded-sm"> */}
-     <div className=" ">
-     {myAppliedJobs?.length ? (
+     <div>
+     {appliedJobs?.length ? (
         <div className="overflow-x-auto">
           <h2 className="text-center font-bold text-2xl text-blue-500">
             Applied Jobs
           </h2>
-          <table className="table ">
+          <table className="table">
             <thead>
               <tr>
                 <th></th>
@@ -66,14 +101,16 @@ const UserProfile = () => {
                 <th>Job Type</th>
                 <th>Company Name</th>
                 <th>Company Location</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {myAppliedJobs.map((job, idx) => (
+              {appliedJobs.map((job, idx) => (
                 <SingleAppliedJob
                   key={idx}
                   index={idx + 1}
                   job={job}
+                  setDeleteJobTriggered={setDeleteJobTriggered}
                 ></SingleAppliedJob>
               ))}
             </tbody>

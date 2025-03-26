@@ -43,8 +43,12 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Set session persistence when the app loads
     setPersistence(auth, browserSessionPersistence)
-      .then(() => console.log("Session persistence set to 'session'"))
-      .catch((error) => console.error("Error setting persistence:", error));
+      .then(() => {
+        // console.log("Session persistence set to 'session'");
+      })
+      .catch((error) => {
+        // console.error("Error setting persistence:", error);
+      });
 
     // // Listen for authentication state changes
     // const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -63,33 +67,31 @@ const AuthProvider = ({ children }) => {
         // when 1st time registered, we will not track user until logging attempt
         const verifiedUser = currentUser.emailVerified;
 
-        console.log("In AUTH STATE=>>", verifiedUser);
+        // console.log("In AUTH STATE=>>", verifiedUser);
         // if email verified
         if (verifiedUser) {
           setUser(currentUser);
-
-          // POST API: get jwt token
-          const user = { email: currentUser.email };
-          axios
-            .post("http://localhost:5000/jwt", user, { withCredentials: true })
-            .then((res) => {
-              setLoading(false);
-              console.log("RESPONSE=>", res.data);
-            });
         } else {
           setUser(null);
         }
-      } else {
-        // ALAS! user logging out? => unavailable
-        // POST API: JWT AUTH
-        axios
-          .post("http://localhost:5000/logout", {}, { withCredentials: true })
-          .then((res) => {
-            console.log("LOGOUT=>", res.data);
-            setLoading(false);
-          });
+
+        if (currentUser?.email) {
+          // console.log("HELLO=>", currentUser?.email);
+
+          // POST API: get jwt token
+
+          const user = { email: currentUser?.email };
+          axios
+            .post("http://localhost:5000/jwt", user, {
+              withCredentials: true,
+            })
+            .then((res) => {
+              setLoading(false);
+              // console.log("RESPONSE=>", res.data);
+            });
+        }
       }
-      console.log("currentUser:=> State captured:->", currentUser);
+      // console.log("currentUser:=> State captured:->", currentUser);
       // setLoading(false);
     });
 
@@ -102,6 +104,18 @@ const AuthProvider = ({ children }) => {
   const logOutUser = () => {
     setLoading(true);
     setUser(null);
+    // ALAS! user logging out? => unavailable
+    // POST API: JWT AUTH
+    axios
+      .post(
+        "http://localhost:5000/logout",
+        {},
+        { withCredentials: true }
+      )
+      .then((res) => {
+        // console.log("LOGOUT=>", res.data);
+        setLoading(false);
+      });
     return signOut(auth);
   };
 

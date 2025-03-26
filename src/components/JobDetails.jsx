@@ -14,6 +14,7 @@ const JobDetails = () => {
   //   const [jobPost, setJobPost] = useState({});
   const jobPost = useLoaderData();
   const { loading, setLoading, user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const {
     _id,
@@ -27,8 +28,8 @@ const JobDetails = () => {
     applicationDeadline,
     salaryRange,
   } = jobPost;
-  console.log(jobPost);
-  console.log(company, location);
+  // console.log(jobPost);
+  // console.log(company, location);
 
   //   useEffect(() => {
   //     setLoading(true);
@@ -81,11 +82,12 @@ const JobDetails = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.upsertedCount)
-        toast('Cheers! Job application successfull!')
-      if(data.matchedCount)
-        toast('Relax! You already applied for the Job!')
-        console.log("AppliedJob DB response=>", data)
+        if (data.upsertedCount) toast("Cheers! Job application successfull!");
+        if (data.matchedCount) toast("Relax! You already applied for the Job!");
+        // console.log("AppliedJob DB response=>", data)
+        // redirecting back to category
+        navigate(-1)
+      
       });
   };
 

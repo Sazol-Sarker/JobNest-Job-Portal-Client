@@ -66,6 +66,14 @@ const NavBar = () => {
       </li>
       <li>
         <NavLink
+          to="/allJobs"
+          className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}
+        >
+          All Jobs
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
           to="/addJob"
           className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}
         >

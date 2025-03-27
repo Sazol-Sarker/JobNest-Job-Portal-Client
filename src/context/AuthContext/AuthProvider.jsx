@@ -91,7 +91,7 @@ const AuthProvider = ({ children }) => {
             });
         }
       }
-      console.log("currentUser:=> State captured:->", currentUser);
+      // console.log("currentUser:=> State captured:->", currentUser);
       // setLoading(false);
     });
 

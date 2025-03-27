@@ -14,6 +14,7 @@ const JobDetails = () => {
   //   const { id } = useParams();
   //   const [jobPost, setJobPost] = useState({});
   const jobPost = useLoaderData();
+  console.log("jobPost",jobPost);
   const { loading, setLoading, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -28,6 +29,7 @@ const JobDetails = () => {
     requirements,
     applicationDeadline,
     salaryRange,
+    hr_email,
     postedAt
   } = jobPost;
 
@@ -59,6 +61,7 @@ const JobDetails = () => {
   //   );
   // }
 
+  
   const handleApplyJob = (user) => {
     const { email } = user;
     const appliedJob = {
@@ -67,6 +70,8 @@ const JobDetails = () => {
       company_location: location,
       job_title: title,
       jobType,
+      applicationDeadline,
+      hr_email
     };
 
     // send to mongoDB: POST API appliedJobs

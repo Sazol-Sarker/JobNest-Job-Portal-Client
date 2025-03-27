@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext/AuthContext";
 import HotJobCategoryCard from "./HotJobCategoryCard";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const MyPostedJobs = () => {
   const { user } = useContext(AuthContext);
@@ -12,7 +13,10 @@ const MyPostedJobs = () => {
   // unfiltered jobs
   // const [unfilteredJobs, setUnfilteredJobs] = useState([]);
   const [applicantCount, setApplicantCount] = useState([]);
+  // need to be array
   const [deleteTriggered, setDeleteTriggered] = useState(false);
+  const [jobPostStatus,setJobPostStatus]=useState([])
+  // console.log("jobPostStatus=>", jobPostStatus);
   // console.log("JOBS=>", jobs);
   // console.log("applicantCount=>", applicantCount);
 
@@ -41,48 +45,8 @@ const MyPostedJobs = () => {
     }
   }, [user, deleteTriggered]);
 
-  // useEffect(() => {
-  //   if(jobs)
-  //   {
 
-  //     // count applicants for each job post
-  //     fetch(`http://localhost:5000/appliedJobs/${hr_email}/${company}/${title}/${applicationDeadline}`)
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data));
-
-  //   }
-  // }, [jobs,deleteTriggered]);
-
-  // target: X applied API, fix later
-  // if (jobs) {
-  //   jobs.map((job) => {
-  //     // count applicants for each job post
-  //     fetch(
-
-  //         `http://localhost:5000/appliedJobsCount?company_name=${encodeURIComponent(job.company)}&job_title=${encodeURIComponent(job.title)}}`
-
-  //       // `http://localhost:5000/appliedJobs/${job.company}/${job.title}`
-  //       // `http://localhost:5000/appliedJobs/${job.hr_email}/${job.company}/${job.title}/${job.applicationDeadline}`
-  //     )
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setApplicantCount(...applicantCount,data)
-  //         console.log("SUCCESS");
-  //         // setUnfilteredJobs(data);
-  //       });
-  //   });
-
-  //   //  jobs.map((job) => {
-  //   //   const count = unfilteredJobs.filter(
-  //   //     (unfiltJob) =>
-  //   //       unfiltJob.company_name === job.company &&
-  //   //       unfiltJob.title === job.title
-  //   //   ).length;
-  //   //
-  //   // });
-  //   // console.log("applicantCount=>", applicantCount);
-  // }
-
+  
   const handleJobDelete = (id) => {
     // fire delete api:jobs
     fetch(`http://localhost:5000/jobs/${id}`, {
@@ -98,7 +62,7 @@ const MyPostedJobs = () => {
       });
   };
 
-
+// count applicants per job post
   useEffect(() => {
     if (jobs.length > 0) {
       jobs.forEach((job, idx) => {
@@ -118,6 +82,8 @@ const MyPostedJobs = () => {
             const updatedApplicantCount=[...applicantCount,data.length]
             // console.log("updatedApplicantCount=>",updatedApplicantCount);
             setApplicantCount(updatedApplicantCount)
+            const updatedApplicationStatus=[...jobPostStatus,data.status]
+            setJobPostStatus(updatedApplicationStatus)
     
 
           })
@@ -127,6 +93,16 @@ const MyPostedJobs = () => {
       });
     }
   }, [jobs]); 
+
+  const handleChangeJobStatus=(id)=>{
+    // fire patch api:jobs
+    axios.patch(`http://localhost:5000/jobs?id=${id}`)
+    .then(res=>{
+      // setJobPostStatus()
+      toast('Status changed')
+      // console.log("Jobs status patch=>",res.data);
+    })
+  }
   
 
   return (
@@ -197,6 +173,7 @@ const MyPostedJobs = () => {
                     </td>
                     <td>
                       <span className="text-teal-800">{job.status} </span>
+                      {/* <span className="text-teal-800">{jobPostStatus[idx]} </span> */}
                       <br /> {applicantCount[idx] ? applicantCount[idx] : "Loading..."} applied
                       {/* *************** */}
                     </td>
@@ -206,9 +183,9 @@ const MyPostedJobs = () => {
                         Details
                       </button>
                       <button
-                        // onClick={() => handleJobDelete(job._id)}
+                        onClick={() => handleChangeJobStatus(job._id)}
                         className="btn btn-warning btn-xs bg-green-400"
-                        disabled
+                        disabled={job.status!=="active"} 
                       >
                         Change status
                       </button>

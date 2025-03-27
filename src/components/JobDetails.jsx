@@ -14,7 +14,7 @@ const JobDetails = () => {
   //   const { id } = useParams();
   //   const [jobPost, setJobPost] = useState({});
   const jobPost = useLoaderData();
-  console.log("jobPost",jobPost);
+  // console.log("jobPost",jobPost);
   const { loading, setLoading, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ const JobDetails = () => {
 
   // use this to wrap card with HOT! NEW! tags if  diffInDays=0
   const diffInDays=differenceInDays(new Date(),postedAt||'2025-03-27')
-  console.log(diffInDays);
+  // console.log(diffInDays);
 
   // console.log(jobPost);
   // console.log(company, location);

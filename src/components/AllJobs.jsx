@@ -9,19 +9,21 @@ const AllJobs = () => {
   const loadedJobs = useLoaderData();
   const [jobPosts, setJobPosts] = useState(loadedJobs);
   const [searchText, setSearchText] = useState("");
+  const [minSalary, setMinSalary] = useState("");
+  const [maxSalary, setMaxSalary] = useState("");
   // console.log(loadedJobs);
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/jobs?sort=${sortBySalary}&searchText=${searchText}`
+        `http://localhost:5000/jobs?sort=${sortBySalary}&searchText=${searchText}&minSalary=${minSalary}&maxSalary=${maxSalary}`
       )
       .then((res) => {
         setJobPosts(res.data);
         // console.log("hurray! sorted=", res.data);
         toast(`Sorted by salary ${sortBySalary ? "Descending" : "Ascending"}!`);
       });
-  }, [sortBySalary, searchText]);
+  }, [sortBySalary, searchText, minSalary, maxSalary]);
 
   const handleSortBySalary = () => {
     setSortBySalary(!sortBySalary);
@@ -62,18 +64,39 @@ const AllJobs = () => {
               </svg>
             </button>
           </label>
+          <div className="border border-teal-300 p-3 mx-3 my-4 flex">
+            <h2 className="mr-2 font-bold">Filter</h2>
+            <div className="*:mx-4 *:p-1">
+              <input
+                onChange={(e) => setMinSalary(e.target.value)}
+                type="text"
+                placeholder="Min Salary"
+                className="border border-teal-300"
+              />
+              <input
+                onChange={(e) => setMaxSalary(e.target.value)}
+                type="text"
+                placeholder="Max Salary"
+                className="border border-teal-300"
+              />
+            </div>
+          </div>
         </div>
       </div>
-      {
-        jobPosts.length>0?<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {jobPosts.map((job, idx) => (
-          <HotJobCategoryCard
-            key={idx}
-            jobsByCategory={job}
-          ></HotJobCategoryCard>
-        ))}
-      </div>:<div className="text-3xl text-center text-teal-500 m-5 p-5 font-bold">{`No job posts found nearby  ${searchText}`}</div>
-      }
+      {jobPosts.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {jobPosts.map((job, idx) => (
+            <HotJobCategoryCard
+              key={idx}
+              jobsByCategory={job}
+            ></HotJobCategoryCard>
+          ))}
+        </div>
+      ) : (
+        <div className="text-3xl text-center text-teal-500 m-5 p-5 font-bold">
+          {`No job posts found nearby  ${searchText}`}
+        </div>
+      )}
     </div>
   );
 };

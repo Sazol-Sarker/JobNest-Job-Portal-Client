@@ -87,7 +87,7 @@ const Login = () => {
       });
   };
   return (
-    <div className="hero bg-base-200 my-10">
+    <div className="hero md:bg-base-200 my-10 py-4 md:py-10">
       <title>JobNest | Login</title>
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left w-80 ml-10">

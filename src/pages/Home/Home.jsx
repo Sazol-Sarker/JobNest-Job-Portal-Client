@@ -12,22 +12,23 @@ import { Outlet } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div>
+    <div className="w-full max-w-7xl  mt-5 ">
       {/* BANNER */}
-      <div className="hero bg-base-200 min-h-screen">
-        <div className="hero-content flex-col ">
+      <div className="hero w-full max-w-7xl bg-base-200 ">
+        {/* min-h-screen */}
+        <div className="hero-content w-full flex-col ">
           <div className="flex">
             <div>
-              <div>
-                <motion.h2
-                  animate={{ x: [0, 50, 0] }}
+              <div className="w-full mx-auto">
+                {/* <motion.h2
+                  animate={{ x: [10, 40, 10] }}
                   transition={{
                     duration: 5,
                     delay: 1,
                     ease: "easeInOut",
                     repeat: Infinity,
                   }}
-                  className="text-5xl font-bold"
+                  className="text-2xl md:text-3xl font-bold"
                 >
                   The
                   <motion.span
@@ -37,23 +38,49 @@ const Home = () => {
                       ease: "easeInOut",
                       repeat: Infinity,
                     }}
+                    className="ml-1"
                   >
                     Easiest Way
-                  </motion.span>{" "}
+                  </motion.span>
                   <br></br> to Get Your New Job
+                </motion.h2> */}
+                <motion.h2
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{
+                    duration: 1.5,
+                    ease: "easeOut",
+                    delay: 0.5,
+                  }}
+                  className="text-2xl md:text-3xl font-bold"
+                >
+                  The{" "}
+                  <motion.span
+                    animate={{ color: ["#106cb3", "#7f28a1", "#eb34e1"] }}
+                    transition={{
+                      duration: 3,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                    }}
+                    className="ml-1"
+                  >
+                    Easiest Way
+                  </motion.span>
+                  <br />
+                  to Get Your New Job
                 </motion.h2>
 
-                <p className="py-6 w-4/5 text-gray-700">
+                <p className="py-6  text-gray-700 w-4/5">
                   Each month, more than 3 million job seekers turn to website in
                   their search for work, making over 140,000 applications every
                   single day
                 </p>
               </div>
-              <div className="flex justify-between items-center join  border-2 bg-white w-4/5">
-                <div className="flex items-center space-x-2  pr-4">
-                  {/* <FaBriefcase className="text-gray-500" /> */}
+              {/* search box */}
+              {/* <div className="flex flex-col md:flex-row md:justify-between md:items-center join  border-2 bg-white ">
+                <div className="flex flex-1 items-center space-x-2  pr-4">
                   <IoBagHandle className="text-teal-500 pl-1  text-2xl" />
-                  <select className="text-gray-700  focus:outline-none join-item pr-5 py-6">
+                  <select className="text-gray-700  focus:outline-none join-item pr-2 md:pr-5 py-3 md:py-6">
                     <option value="" hidden>
                       Industry
                     </option>
@@ -64,21 +91,10 @@ const Home = () => {
                   </select>
                 </div>
 
-                {/* <div className="flex items-center">
-                <select className="text-gray-700 focus:outline-none">
-                  <option value="" hidden>
-                    Industry
-                  </option>
-                  <option>Sci-fi</option>
-                  <option>Drama</option>
-                  <option>Action</option>
-                </select>
-              </div> */}
-
-                <div className="flex items-center space-x-2  pr-4">
+                <div className=" flex flex-1 items-center space-x-2  pr-4">
                   <BsFillPinMapFill className="text-teal-500" />
 
-                  <select className="text-gray-700 focus:outline-none ml-10 join-item py-6">
+                  <select className="text-gray-700 focus:outline-none ml-2 md:ml-10 join-item py-2 md:py-6">
                     <option value="" hidden>
                       Location
                     </option>
@@ -88,18 +104,54 @@ const Home = () => {
                   </select>
                 </div>
 
-                <div className="ml-5 flex items-center ">
-                  {/* border-4 border-teal-500 */}
+                <div className="md:ml-5 flex items-center ">
                   <button className="flex justify-center items-center gap-x-2 join-item  bg-blue-600  rounded-xl  px-4 mx-5 py-2 text-white ">
                     <IoSearchOutline className="text-white" />
                     Search
                   </button>
                 </div>
-                {/* </div> */}
+              </div> */}
+              {/* src */}
+              <div className="w-full bg-white rounded-2xl shadow-lg p-4 md:p-6 my-6">
+                <div className="flex flex-col md:flex-row gap-4 md:items-center">
+                  {/* Industry Selector */}
+                  <div className="flex items-center gap-2 flex-1">
+                    <IoBagHandle className="text-teal-500 text-2xl" />
+                    <select className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                      <option value="" hidden>
+                        Choose Industry
+                      </option>
+                      <option value="IT">IT</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Marketing">Marketing</option>
+                    </select>
+                  </div>
+
+                  {/* Location Selector */}
+                  <div className="flex items-center gap-2 flex-1">
+                    <BsFillPinMapFill className="text-teal-500 text-lg" />
+                    <select className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                      <option value="" hidden>
+                        Choose Location
+                      </option>
+                      <option value="Dhaka">Dhaka</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="London">London</option>
+                    </select>
+                  </div>
+
+                  {/* Search Button */}
+                  <div className="flex justify-center w-5/8">
+                    <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl transition-all duration-300">
+                      <IoSearchOutline />
+                      Search
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="img-container space-y-2">
+            <div className="img-container space-y-2 hidden lg:inline">
               <motion.img
                 animate={{ y: [0, 50, 0] }}
                 transition={{
@@ -124,19 +176,11 @@ const Home = () => {
                 alt=""
               />
             </div>
-
-            {/* search box */}
-
-            {/* <div className="images flex gap-5 m-5">
-              <img src={homeTeam2} className="w-60" alt="" />
-              <img src={homeTeam3} className="w-60" alt="" />
-            </div> */}
-            {/* <button className="btn btn-primary">Get Started</button> */}
           </div>
         </div>
       </div>
 
-      <main className="w-10/12 mx-auto ">
+      <main className="w-full md:w-10/12 mx-auto ">
         <BrowseCategoryLayout></BrowseCategoryLayout>
         {/* <HotJobsLayout></HotJobsLayout> */}
         <Outlet></Outlet>

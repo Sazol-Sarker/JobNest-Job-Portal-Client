@@ -17,14 +17,15 @@ const SingleAppliedJob = ({ index, job, setDeleteJobTriggered }) => {
   return (
     <tr className="hover:bg-teal-300 group">
       <th>{index}</th>
-      <td>{job_title}</td>
-      <td>{jobType}</td>
-      <td>{company_name}</td>
-      <td>{company_location}</td>
+      <td><span className="text-blue-500 font-bold">{job_title} </span><span className="mt-2 md:hidden">{jobType}</span></td>
+      <td className="hidden md:table-cell">{jobType}</td>
+      <td>{company_name} <span className="md:hidden"><br />{company_location}</span></td>
+      <td className="hidden md:table-cell">{company_location}</td>
 
       <td>
         {/* DELETE API trigger */}
         <button
+        title="Delete application"
           onClick={() => handleDeleteAppliedJob(_id)}
           className="group-hover:bg-teal-500 group-hover:hover:bg-pink-500 py-3 px-5 rounded-md"
         >

@@ -42,7 +42,7 @@ const JobCategory1 = () => {
   // }, []);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full max-w-5xl flex flex-col items-center">
       {/* <h2>Job Categories: {jobCategories.length}</h2> */}
       <div className="flex flex-col items-center w-full p-4">
         {/* Carousel Container */}
@@ -67,7 +67,7 @@ const JobCategory1 = () => {
               {items.map((item, index) => (
                 <div
                   key={index}
-                  className="hover:cursor-pointer w-[400px] border-2 bg-white h-[150px] flex items-center flex-col text-center rounded-lg shadow-md mx-2 px-2"
+                  className="hover:cursor-pointer hover:bg-slate-200 w-[400px] border-2 bg-white h-[150px] flex items-center flex-col text-center rounded-lg shadow-md mx-2 px-2"
                 >
                   <div>
                     <img

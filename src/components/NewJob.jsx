@@ -4,14 +4,24 @@ import { CiSquarePlus } from "react-icons/ci";
 import AuthContext from "../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 
 const NewJob = () => {
+  // auth  context- access the user data
+  const { user, loading } = useContext(AuthContext);
+  // location hook
+  const location = useLocation();
+  const navigate=useNavigate()
+  console.log("location in newjob=>", location);
+  // setter of the update fields by past value
+  const updateForm = location.pathname.includes("/edit");
+  console.log(updateForm);
+  const formData = useLoaderData();
+  console.log("formData=>>", formData);
   const [jobType, setJobType] = useState("");
   const [jobCategory, setJobCategory] = useState("");
   const [currencyType, setCurrencyType] = useState("");
   const [jobRequirements, setJobRequirements] = useState([]);
-  // auth  context- access the user data
-  const { user, loading } = useContext(AuthContext);
   //   const { displayName="John", email } = user;
 
   if (loading) {
@@ -24,8 +34,8 @@ const NewJob = () => {
       </div>
     );
   }
-  const { displayName,email } = user;
-//   const displayName = email.split("@")[0];
+  const { displayName, email } = user;
+  //   const displayName = email.split("@")[0];
 
   const handleNewJobData = (e) => {
     // stop reloading
@@ -74,25 +84,42 @@ const NewJob = () => {
       hr_email: HR_Email, // "HR Email"
       hr_name: HR_Name, // "HR Name"
       company_logo: CompanyLogo, // Static company logo link
-      postedAt:JobPostedAt
+      postedAt: JobPostedAt,
     };
     // console.log("newJobData=>>", newJobData);
 
-    // fire post api
-    axios.post("http://localhost:5000/jobs/new", newJobData).then((res) => {
-      console.log(res.data);
-      if (res.data.acknowledged) {
-        form.reset();
-        toast(`New recruitment circular for ${JobTitle} posted!`);
-      }
-    });
+    if (updateForm) {
+      // fire put api
+      axios.put(`http://localhost:5000/jobs/${formData._id}`, newJobData).then((res) => {
+        console.log(res.data);
+        if (res.data.modifiedCount) {
+          form.reset();
+          toast(`Recruitment circular for ${JobTitle} updated!`);
+        }
+      });
+    } else {
+      // fire post api
+      axios.post(`http://localhost:5000/jobs/new`, newJobData).then((res) => {
+        console.log(res.data);
+        if (res.data.acknowledged) {
+          form.reset();
+          toast(`New recruitment circular for ${JobTitle} posted!`);
+        }
+      });
+    }
   };
 
   return (
-    <div className="hero bg-base-200  min-h-screen">
+    <div className="hero md:bg-base-200  min-h-screen">
       <div className="hero-content  flex-col ">
         <div className="text-center lg:text-left">
-          <h1 className="text-4xl font-bold text-teal-800">Post a new job</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-teal-800">
+            {updateForm ? (
+              <span>Update posted job</span>
+            ) : (
+              <span>Post a new job</span>
+            )}
+          </h1>
         </div>
         <div className="card bg-base-100  max-w-2xl   shrink-0 shadow-2xl">
           <form onSubmit={handleNewJobData} className="card-body ">
@@ -104,6 +131,7 @@ const NewJob = () => {
               <input
                 type="url"
                 name="CompanyLogo"
+                defaultValue={updateForm ? formData?.company_logo : ""}
                 placeholder="Company_logo url"
                 className="input input-bordered w-full"
                 required
@@ -117,6 +145,7 @@ const NewJob = () => {
               <input
                 type="text"
                 name="CompanyName"
+                defaultValue={updateForm ? formData?.company : ""}
                 placeholder="Alpha Inc."
                 className="input input-bordered w-full"
                 required
@@ -130,6 +159,7 @@ const NewJob = () => {
               <input
                 type="text"
                 name="CompanyLocation"
+                defaultValue={updateForm ? formData?.location : ""}
                 placeholder="Dhaka, Bangladesh"
                 className="input input-bordered w-full"
                 required
@@ -143,6 +173,7 @@ const NewJob = () => {
               <input
                 type="text"
                 name="JobTitle"
+                defaultValue={updateForm ? formData?.title : ""}
                 placeholder="Software Engineer"
                 className="input input-bordered w-full"
                 required
@@ -183,7 +214,7 @@ const NewJob = () => {
               <input
                 type="text"
                 name="HR_Name"
-                defaultValue={displayName}
+                defaultValue={updateForm ? formData?.hr_name : displayName}
                 // placeholder="John doe"
                 className="input input-bordered w-full"
                 // readonly
@@ -266,6 +297,7 @@ const NewJob = () => {
               /> */}
               <textarea
                 name="JobDescription"
+                defaultValue={updateForm ? formData?.description : ""}
                 id=""
                 cols="30"
                 rows="10"
@@ -282,6 +314,9 @@ const NewJob = () => {
                 <input
                   type="text"
                   name="JobRequirements"
+                  defaultValue={
+                    updateForm ? formData?.requirements?.join(", ") : ""
+                  }
                   placeholder="Requirements (separated by comma)"
                   className="input input-bordered w-full"
                   required
@@ -297,6 +332,9 @@ const NewJob = () => {
               <input
                 type="datetime-local"
                 name="JobApplicationDeadline"
+                defaultValue={
+                  updateForm ? formData?.applicationDeadline?.slice(0, 16) : ""
+                }
                 className="input input-bordered"
                 required
               />
@@ -310,6 +348,7 @@ const NewJob = () => {
                 <input
                   type="number"
                   name="MinimumSalary"
+                  defaultValue={updateForm ? formData?.salaryRange?.min : ""}
                   placeholder="Minimum Salary"
                   className="input input-bordered"
                   required
@@ -318,13 +357,14 @@ const NewJob = () => {
                 <input
                   type="number"
                   name="MaximumSalary"
+                  defaultValue={updateForm ? formData?.salaryRange?.max : ""}
                   placeholder="Maximum Salary"
                   className="input input-bordered"
                   required
                 />
                 {/* Currency */}
                 <select
-                  value={currencyType}
+                  value={`updateForm ? formData?.salaryRange?.currency : "currencyType"`}
                   onChange={(e) => setCurrencyType(e.target.value)}
                   name="Currency"
                   id=""
@@ -340,8 +380,13 @@ const NewJob = () => {
               </div>
             </div>
 
-            <div className="form-control mt-6 flex items-center justify-center">
-              <button className="btn btn-primary">Submit</button>
+            <div className="form-control mt-6 flex gap-2 items-center justify-center">
+              <button className="btn btn-primary">
+                {updateForm ? "Update" : "Create"}
+              </button>
+              <button onClick={()=>navigate(-1)} type="button" className="btn btn-primary bg-blue-500">
+              Go Back
+              </button>
             </div>
           </form>
         </div>

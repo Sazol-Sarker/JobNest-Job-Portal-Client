@@ -69,6 +69,7 @@ const Register = () => {
         const newUser = {
           name: name || "Unknown",
           email: email,
+          role:"user",
           creationTime: metadata.creationTime,
           lastSignInTime: metadata.lastSignInTime,
         };
@@ -148,7 +149,7 @@ const Register = () => {
       });
   };
   return (
-    <div className="hero w-11/12 mx-auto bg-base-200 my-10">
+    <div className="hero w-11/12 mx-auto md:bg-base-200 my-10">
       <title>JobNest | Register</title>
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left w-80 ml-10">

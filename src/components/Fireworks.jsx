@@ -7,7 +7,7 @@ const Fireworks = () => {
   }, []);
 
   const launchFireworks = () => {
-    const duration = 1 * 1000; // Fireworks duration (3 seconds)
+    const duration = 1 * 800; 
     const end = Date.now() + duration;
 
     (function frame() {

@@ -9,17 +9,40 @@ import {
 import AuthContext from "../context/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import JobNestLogo from "../assets/JobNestLogo.png";
+import { IoMdOptions } from "react-icons/io";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import useAdmin from "../hooks/useAdmin";
+
 const NavBar = () => {
   const { id } = useParams();
-  // context data
-
   const { user, logOutUser } = useContext(AuthContext);
+  // context data
+  
   // console.log("NAVBAR=>++", user?.photoURL, user?.displayName);
   // console.log("user NAVBAR =>",user);
   // console.log("user.emailVerified NAVBAR =>",user.emailVerified);
   const navigate = useNavigate();
   const location = useLocation();
   const isJobDetails = location.pathname === `/jobs/${id}`;
+
+  // // Admin check
+  const { isAdmin, isRoleLoading, isError }=useAdmin()
+  // const {data:userRole,isLoading,refetch}=useQuery({
+  //   queryKey:['userRole',user?.email],
+  //   enabled:!!user?.email,
+  //   queryFn:async()=>{
+  //    const res=await axios.get(`http://localhost:5000/users/${user.email}`)
+
+  //    return res.data
+     
+  //   }
+  // })
+  // const isAdmin=userRole?.role=="admin"
+
+  if(isRoleLoading){
+    return <div>Role check Loading...</div>
+  }
 
   // console.log("isJobDetails==>",isJobDetails);
 
@@ -72,18 +95,34 @@ const NavBar = () => {
           All Jobs
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          to="/addJob"
-          className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}
-        >
-          Add A Job
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/allPostedJobs"  className={"border-2 border-teal-300 m-4 text-[#05264E] font-medium"}>My Posted Jobs</NavLink>
-      </li>
-      {user && (
+      {isAdmin ? (
+        <>
+          
+          <li>
+            <NavLink
+              to="/addJob"
+              className={
+                "border-2 border-teal-300 m-4 text-[#05264E] font-medium"
+              }
+            >
+              Add A Job
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/allPostedJobs"
+              className={
+                "border-2 border-teal-300 m-4 text-[#05264E] font-medium"
+              }
+            >
+              My Posted Jobs
+            </NavLink>
+          </li>
+        </>
+      ) : (
+        ""
+      )}
+      {user ? (
         <li>
           {/* need t edit */}
           <NavLink
@@ -95,6 +134,23 @@ const NavBar = () => {
             Profile
           </NavLink>
         </li>
+      ) : (
+        <>
+          <button
+            className={
+              "border-2 border-teal-300 rounded-md m-4 py-1 px-3 text-[#05264E] font-medium"
+            }
+          >
+            <NavLink to="/register">Signup</NavLink>
+          </button>
+          <button
+            className={
+              "border-2 border-teal-300 rounded-md m-4 py-1 px-3 text-[#05264E] font-medium"
+            }
+          >
+            <NavLink to="/login">Login</NavLink>
+          </button>
+        </>
       )}
       {isJobDetails && (
         <li onClick={handleGoBackToCategory}>
@@ -114,33 +170,20 @@ const NavBar = () => {
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
+            <IoMdOptions className="text-3xl text-primary" />
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-40 max-w-40 shadow-sm"
           >
             {links}
           </ul>
         </div>
         <Link to="" className="btn btn-ghost text-xl">
-          <img src={JobNestLogo} className="max-w-16" alt="" />
+          <img src={JobNestLogo} className="max-w-8" alt="" />
           {/* #A55A5A */}
 
-          <h3 className="text-2xl text-teal-500">JobNest</h3>
+          <h3 className="text-2xl text-teal-500 hidden md:inline">JobNest</h3>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -153,9 +196,9 @@ const NavBar = () => {
               <img
                 src={user.photoURL}
                 alt="user"
-                className="w-10 rounded-full border-2"
+                className="w-7 md:w-10 rounded-full border-2"
               />
-              <p className="text-[#05264E] font-bold">{user.displayName}</p>
+              <p className="text-[#05264E] text-sm md:text-md font-bold">{user.displayName}</p>
             </Link>
             <Link onClick={handleLogout} to="/login" className="btn">
               Log-out
@@ -163,7 +206,7 @@ const NavBar = () => {
           </>
         ) : (
           <ul className="flex gap-x-5">
-            <button
+            {/* <button
               className={
                 "border-2 border-teal-300 rounded-md m-4 py-1 px-3 text-[#05264E] font-medium"
               }
@@ -176,7 +219,7 @@ const NavBar = () => {
               }
             >
               <NavLink to="/login">Login</NavLink>
-            </button>
+            </button> */}
           </ul>
         )}
       </div>

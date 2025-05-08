@@ -53,7 +53,7 @@ const GoogleSignIn = () => {
     <div>
       <button
         onClick={handleGoogleSignIn}
-        className="btn w-full border-1 p-6 mx-5 border-teal-500 text-lg bg-white"
+        className="btn w-full border-1 p-6  border-teal-500 text-lg bg-white"
       >
         <FcGoogle className="text-xl" />
         Sign up with Google

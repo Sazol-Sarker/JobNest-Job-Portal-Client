@@ -3,6 +3,7 @@ import HotJobCategoryCard from "./HotJobCategoryCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 
 const AllJobs = () => {
   const [sortBySalary, setSortBySalary] = useState(false);
@@ -13,17 +14,35 @@ const AllJobs = () => {
   const [maxSalary, setMaxSalary] = useState("");
   // console.log(loadedJobs);
 
-  useEffect(() => {
-    axios
-      .get(
+  const {
+    data: jobs,
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ["jobs=[]", sortBySalary, searchText, minSalary, maxSalary],
+    queryFn: async () => {
+      const res = await axios.get(
         `http://localhost:5000/jobs?sort=${sortBySalary}&searchText=${searchText}&minSalary=${minSalary}&maxSalary=${maxSalary}`
-      )
-      .then((res) => {
-        setJobPosts(res.data);
-        // console.log("hurray! sorted=", res.data);
-        toast(`Sorted by salary ${sortBySalary ? "Descending" : "Ascending"}!`);
-      });
-  }, [sortBySalary, searchText, minSalary, maxSalary]);
+      );
+      return res.data;
+    },
+  });
+
+  if (isPending) {
+    return <div>Loading....</div>;
+  }
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://localhost:5000/jobs?sort=${sortBySalary}&searchText=${searchText}&minSalary=${minSalary}&maxSalary=${maxSalary}`
+  //     )
+  //     .then((res) => {
+  //       setJobPosts(res.data);
+  //       console.log("jobPosts==>", res.data);
+  //       toast(`Sorted by salary ${sortBySalary ? "Descending" : "Ascending"}!`);
+  //     });
+  // }, [sortBySalary, searchText, minSalary, maxSalary]);
 
   const handleSortBySalary = () => {
     setSortBySalary(!sortBySalary);
@@ -83,20 +102,23 @@ const AllJobs = () => {
           </div>
         </div>
       </div>
-      {jobPosts.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {jobPosts.map((job, idx) => (
-            <HotJobCategoryCard
-              key={idx}
-              jobsByCategory={job}
-            ></HotJobCategoryCard>
-          ))}
-        </div>
-      ) : (
-        <div className="text-3xl text-center text-teal-500 m-5 p-5 font-bold">
-          {`No job posts found nearby  ${searchText}`}
-        </div>
-      )}
+
+      <div className="">
+        {jobPosts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {jobs.map((job, idx) => (
+              <HotJobCategoryCard
+                key={idx}
+                jobsByCategory={job}
+              ></HotJobCategoryCard>
+            ))}
+          </div>
+        ) : (
+          <div className="text-3xl text-center text-teal-500 m-5 p-5 font-bold">
+            {`No job posts found nearby  ${searchText}`}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

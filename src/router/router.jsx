@@ -51,9 +51,20 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/jobs/edit/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/jobs/${params.id}`),
+        // fetch(`http://localhost:5000/jobs/${params.id}`),
+        element: (
+          <PrivateRoutes>
+            <NewJob></NewJob>
+          </PrivateRoutes>
+        ),
+      },
+      {
         path: "/allJobs",
-        loader:()=>fetch('http://localhost:5000/jobs'),
-        element:<AllJobs></AllJobs>,
+        loader: () => fetch("http://localhost:5000/jobs"),
+        element: <AllJobs></AllJobs>,
       },
       {
         path: "/register",
@@ -90,8 +101,8 @@ const router = createBrowserRouter([
       {
         path: "/allPostedJobs",
         // loader:()=>fetch("http://localhost:5000/hotJob/Engineering"),
-        element: <MyPostedJobs></MyPostedJobs>
-      }
+        element: <MyPostedJobs></MyPostedJobs>,
+      },
     ],
   },
 ]);

@@ -41,7 +41,7 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
   };
 
   return (
-    <div className="card bg-base-100 border-2 border-teal-200 shadow-xl">
+    <div className="card w-full max-w-lg bg-base-100 border-2 border-teal-200 shadow-xl">
       <p className="flex items-center justify-end w-full mt-5 pr-5 text-teal-500 text-2xl">
         <BsLightning />
       </p>
@@ -51,7 +51,7 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
             // src="https://i.ibb.co.com/fzrQ3w8x/icons8-it-96.png"
             src={company_logo}
             alt=""
-            className="rounded-2xl w-14 h-14"
+            className="rounded-2xl w-14 h-14  "
           />
         </figure>
         <div>
@@ -86,19 +86,20 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
         <p className="my-5 text-[#4F5E64]">{description}</p>
 
         {/* <div className="grid grid-cols-3 gap-4 text-lg mb-8 "> */}
-        <div className="flex flex-wrap gap-2 text-lg mb-8 ">
+        <div className="w-full max-h-52 flex flex-wrap gap-y-4 md:gap-2 text-lg mb-8 ">
           {requirements.map((req, idx) => (
-            <p
+            <div
               key={idx}
-              className="badge badge-ghost font-light text-[#536268] p-2  bg-slate-200 "
+              className=" badge badge-ghost break-words font-light text-[#536268] md:p-2  bg-slate-200 "
             >
               {/* {req.split(" ")[0]} */}
               {req}
-            </p>
+            </div>
           ))}
         </div>
+
         {/* SALARY */}
-        <motion.div
+        {/* <motion.div
           animate={{
             x: [30, 80, 30],
             color: ["#8442f5", "#ad42f5", "#f542a1"],
@@ -112,8 +113,8 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
           className="badge badge-ghost text-sm  text-gray-500 p-2 font-bold border-2 mb-4 border-teal-500"
         >
           {salary}
-        </motion.div>
-        <Marquee
+        </motion.div> */}
+        {/* <Marquee
           pauseOnHover
           speed={60}
           className="text-sm hover:cursor-pointer  text-gray-500 p-2 font-bold border-2 rounded-lg mb-4 border-teal-500"
@@ -123,15 +124,20 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
               {salary}
             </span>
           ))}
-        </Marquee>
+        </Marquee> */}
 
+        {/* Salary */}
+        <div className="text-md font-semibold text-green-600 mb-2">
+          Salary: {salary}
+        </div>
+        {/* Deadline + Apply */}
         <div className=" flex items-center justify-between w-full">
           <div className="flex-col md:flex text-[#05264E]">
             {/* <span className="text-[#3C65F5] font-bold text-3xl">$800</span>
               /Hour */}
             <span className="font-bold pr-2 "> Deadline:</span>
             <p className="flex justify-center items-center ">
-              {applicationDeadline}
+              {applicationDeadline.split("T")}
             </p>
           </div>
 
@@ -139,10 +145,9 @@ const HotJobCategoryCard = ({ jobsByCategory }) => {
           <button
             disabled={jobsByCategory.status !== "active"}
             onClick={() => handleCardDetailsAccess(_id)}
-            className="btn text-[#3C65F5] font-light bg-[#E0E6F7] hover:bg-[#3C65F5] hover:text-white"
+            className="btn  text-[#3C65F5] font-light bg-[#E0E6F7] hover:bg-[#3C65F5] hover:text-white"
           >
-            {jobsByCategory.status !== "active"?"Expired":"Apply Now"}
-            
+            {jobsByCategory.status !== "active" ? "Expired" : "Apply Now"}
           </button>
           {/* </Link> */}
         </div>
